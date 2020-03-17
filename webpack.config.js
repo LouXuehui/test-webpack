@@ -29,5 +29,43 @@ module.exports = {
       },
       hash: true //hash戳
     })
-  ]
+  ],
+
+  module: {
+    //模块
+    rules: [
+      //规则 css-loader 解析@import这种语法的
+      //style-loader 把css插入到head标签中
+      //loader的特点 希望单一
+      //loader的用法 字符串只用一个loader
+      //多个loader需要[]
+      //loader的顺序 是从右向左执行 从下向上执行
+      //loader还可以写成 对象方式
+      {
+        test: /\.css$/,
+        use: [
+          {
+            loader: "style-loader",
+            options: {
+              insert: "top" //将html中的style提前
+            }
+          },
+          "css-loader"
+        ]
+      },
+      {
+        //可以处理less文件 sass stylus 
+        //sass node-sass sass-loader 
+        //stylus stylus-loader
+        test: /\.less$/,
+        use: [
+          {
+            loader: "style-loader"
+          },
+          "css-loader", //@import 解析路径
+          "less-loader" // less => css
+        ]
+      }
+    ]
+  }
 };
