@@ -1,9 +1,9 @@
 let path = require("path"); //自带的路径插件
 let HtmlWebpackPlugin = require("html-webpack-plugin"); // html插件
-let MiniCssExtractPlugin = require("mini-css-extract-plugin"); // 将样式文件抽离成main.css文件 
+let MiniCssExtractPlugin = require("mini-css-extract-plugin"); // 将样式文件抽离成main.css文件
 //将css压缩，需要插件optimize-css-assets-webpack-plugin 处理它 需要插件terser-webpack-plugin
-let OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin'); //优化css
-let TerserJSPlugin = require('terser-webpack-plugin');
+let OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin"); //优化css
+let TerserJSPlugin = require("terser-webpack-plugin");
 
 module.exports = {
   devServer: {
@@ -14,19 +14,20 @@ module.exports = {
     open: true, //启动浏览器
     compress: true //gzip 压缩
   },
-  optimization: {//优化项
+  optimization: {
+    //优化项 生产环境下才会调用
     minimizer: [
       new TerserJSPlugin({}), //优化js
-      new OptimizeCSSAssetsPlugin({})//优化css
-    ],
+      new OptimizeCSSAssetsPlugin({}) //优化css
+    ]
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: '[name].css',
-      chunkFilename: '[id].css',
-    }),
+      filename: "[name].css",
+      chunkFilename: "[id].css"
+    })
   ],
-  mode: "production", //模式 默认两种 production 生产模式 development 开发模式
+  mode: "development", //模式 默认两种 production 生产模式 development 开发模式
   entry: "./src/index.js", //入口 从那个地方开始打包
   output: {
     //出口
@@ -70,6 +71,20 @@ module.exports = {
           "postcss-loader",
           "less-loader" // less => css
         ]
+      },
+      {
+        test: /\.js$/,
+        use: {
+          loader: "babel-loader",
+          options: {
+            //用babel-loader 需要把es6转化未es5
+            presets: ["@babel/preset-env"], //大插件的集合
+            plugins: [//小插件
+              ["@babel/plugin-proposal-decorators", { "legacy": true }],
+              ["@babel/plugin-proposal-class-properties", { "loose" : true }]
+            ] 
+          }
+        }
       }
     ]
   }

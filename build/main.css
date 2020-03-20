@@ -1,1 +1,12 @@
-body{background-color:#0ff;background-color:red;-webkit-transform:rotate(45deg);transform:rotate(45deg)}body div{border:1px solid #fff}
+body{
+    background-color: aqua;
+}
+body{
+    background-color: red;
+    -webkit-transform: rotate(45deg);
+            transform: rotate(45deg);
+}
+body div {
+  border: 1px solid #FFF;
+}
+
